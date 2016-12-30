@@ -37,7 +37,7 @@ game.prototype.place = function(col) {
     }
     
     //remove col from possible moves if filled
-    if (this.state[col][this.state.length - 1] != 0){
+    if (this.state[col][this.state[col].length - 1] != 0){
         //find a better way to do this
         for (var j = 0; j < this.possible_moves.length; j++) {
             if (this.possible_moves[j] == col) {
@@ -171,10 +171,10 @@ game.prototype.isTerminal = function() {
     */
     
     //check for a winner - specific for a 7x6 board
-    if (this.checkCol() != 0) return this.checkCol();
-    if (this.checkRow() != 0) return this.checkRow();
-    if (this.checkDiagAsc != 0) return this.checkDiagAsc();
-    if (this.checkDiagDes != 0) return this.checkDiagDes();
+    if (this.checkCol() > 0) return this.checkCol();
+    if (this.checkRow() > 0) return this.checkRow();
+    if (this.checkDiagAsc > 0) return this.checkDiagAsc();
+    if (this.checkDiagDes > 0) return this.checkDiagDes();
     
     //check for empty space, if found, game is not terminal
     if (this.possible_moves.length > 0) return 0;
