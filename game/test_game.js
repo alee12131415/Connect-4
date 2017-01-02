@@ -30,6 +30,7 @@ while (curr_game.isTerminal() == 0) {
 }
 
 printState(curr_game);
+visual(curr_game.state);
 
 if (curr_game.isTerminal() == 4) {
     console.log("no winner");
