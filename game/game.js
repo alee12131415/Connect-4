@@ -126,7 +126,6 @@ game.prototype.checkDiagAsc = function() {
                     continue inner;
                 }
             }
-            console.log(i + "," + j);
             return t[i][j];
         }
     }
@@ -155,10 +154,70 @@ game.prototype.checkDiagDes = function() {
                     continue inner;
                 }
             }
-            console.log(i + "," + j);
             return t[i][j];
         }
     }
+}
+
+game.prototype.getTerminal = function(col) {
+	/*
+	only check item placed
+	
+	should work on any size board
+	*/
+	
+	//get coordinates
+	var player;
+	var x = col; // not needed, unused
+	var y;
+	for (var i = 0; i < this.state[col].length; i++) {
+		if (this.state[col][i] == 0) {
+			y = i - 1;
+			player = this.state[col][i - 1];
+			break;
+		}
+	}
+	
+	//check col
+	if (y < 3) {
+		continue; //skip if height is not even 4 high
+	} else {
+		var colFlag = true;
+		for (var i = 0; i < 4; i++) {
+			if (this.state[col][y - i] != player) {
+				colFlag = false;
+				break;
+			}
+		}
+		if (colFlag) return player;
+	}
+	
+	//check row
+	var rowTotal = 1;
+	for (var i = x + 1; i < this.state.length; i++) {
+		if (this.state[i][y] == player) {
+			rowTotal += 1;
+			if (rowTotal >= 4) {
+				return player;
+			}
+		} else {
+			break;
+		}
+	}
+	for (var i = x - 1; i >= 0; i--) {
+		if (this.state[i][y] == player) {
+			rowTotal += 1;
+			if (rowTotal >= 4) {
+				return player;
+			}
+		} else {
+			break;
+		}
+	}
+	
+	//check diag up
+	var duTotal = 1;
+	
 }
 
 game.prototype.isTerminal = function() {
@@ -173,8 +232,8 @@ game.prototype.isTerminal = function() {
     //check for a winner - specific for a 7x6 board
     if (this.checkCol() > 0) return this.checkCol();
     if (this.checkRow() > 0) return this.checkRow();
-    if (this.checkDiagAsc > 0) return this.checkDiagAsc();
-    if (this.checkDiagDes > 0) return this.checkDiagDes();
+    if (this.checkDiagAsc() > 0) return this.checkDiagAsc();
+    if (this.checkDiagDes() > 0) return this.checkDiagDes();
     
     //check for empty space, if found, game is not terminal
     if (this.possible_moves.length > 0) return 0;
